@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .ad-container {
+        position: relative;
+        width: 300px;
+        height: 600px;
+        background-color: #ffffff;
+        overflow: hidden;
+      }
+
+      .base-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("images/base_image.png");
+        background-size: cover;
+        transition: transform 0.5s;
+      }
+
+      .choice-container {
+        position: absolute;
+        top: 53%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 300px;
+        height: 300px;
+      }
+
+      .choice {
+        width: 100px;
+        height: 100px;
+        animation: pulse 0.5s infinite;
+        cursor: pointer;
+      }
+
+      .buy-now {
+        display: none; /* Initially hidden */
+        position: absolute;
+        top: 95%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        animation: blink 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        animation: confettiAnimation 10s forwards;
+      }
+
+      @keyframes confettiAnimation {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .confetti__piece {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #f55;
+        pointer-events: none;
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="ad-container">
+      <div class="base-image"></div>
+      <div class="choice-container">
+        <img class="choice" src="images/pointing-circle.png" alt="Choice 1" />
+        <img class="choice" src="images/pointing-circle.png" alt="Choice 2" />
+      </div>
+      <a class="buy-now" href="https://www.example.com" target="_blank">
+        <img src="images/buy_now.png" alt="Buy Now" />
+      </a>
+    </div>
+
+    <div class="confetti"></div>
+
+    <script>
+      var baseImage = document.querySelector(".base-image");
+      var choiceImages = document.querySelectorAll(".choice");
+      var choiceImages2 = document.querySelectorAll(".choice"); // Corrected variable name
+      var buyNowLink = document.querySelector(".buy-now");
+      var confettiContainer = document.querySelector(".confetti");
+
+      choiceImages.forEach(function (choiceImage) {
+        choiceImage.addEventListener("click", function () {
+          baseImage.style.transform = "rotateY(180deg)";
+          setTimeout(function () {
+            // Replace the image source with the appropriate image URL
+            if (choiceImage.alt === "Choice 1") {
+              baseImage.style.backgroundImage = "url(images/jollof_choice.png)";
+              spreadConfetti();
+            } else if (choiceImage.alt === "Choice 2") {
+              baseImage.style.backgroundImage = "url(images/waakye_choice.png)";
+              spreadConfetti();
+            }
+            baseImage.style.transform = "rotateY(0)";
+            choiceImages.forEach(function (img) {
+              img.style.display = "none"; // Hide the choice images
+            });
+            //buyNowLink.style.display = "block"; // Show the Buy Now image
+          }, 500);
+        });
+      });
+
+      function spreadConfetti() {
+        var confettiColors = ["#f55", "#5f5", "#55f", "#ff5", "#f5f", "#5ff"];
+        var confettiCount = 100;
+
+        for (var i = 0; i < confettiCount; i++) {
+          var confettiPiece = document.createElement("div");
+          confettiPiece.className = "confetti__piece";
+          confettiPiece.style.backgroundColor =
+            confettiColors[i % confettiColors.length];
+          confettiPiece.style.left = Math.random() * 100 + "%";
+          confettiPiece.style.top = Math.random() * 100 + "%";
+          confettiPiece.style.transform =
+            "rotate(" + Math.random() * 360 + "deg)";
+          confettiContainer.appendChild(confettiPiece);
+        }
+      }
+    </script>
+  </body>
+</html>
